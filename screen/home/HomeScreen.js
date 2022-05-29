@@ -33,7 +33,7 @@ const Homescreen = () => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
   }, []);
-
+  // dadadadas
   useEffect(() => {
     dispatch(fetchProductByCategory(isClickedId));
   }, [isClickedId]);
