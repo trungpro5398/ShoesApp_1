@@ -10,6 +10,7 @@ const initialState = {
   dataCategories: [],
   dataProductsByCategory: [],
   isClickedId: null,
+  isClickedProductId: null,
 };
 /*
 addCase trang thai tuong ung voi promise (fetch)(pending(chua load dc),fulfilled (da goi len va load dc),rejected)
@@ -20,6 +21,9 @@ const homeSlice = createSlice({
   reducers: {
     changeId: (state, action) => {
       state.isClickedId = action.payload.isClickedId;
+    },
+    changeProductId: (state, action) => {
+      state.isClickedProductId = action.payload.isClickedProductId;
     },
   }, // reducers chi la cai key
   extraReducers: builder => {
@@ -48,6 +52,6 @@ const homeSlice = createSlice({
       });
   },
 });
-export const {changeId} = homeSlice.actions;
+export const {changeId, changeProductId} = homeSlice.actions;
 
 export default homeSlice.reducer; // cho phep tao ra nhieu reducers khac nhau

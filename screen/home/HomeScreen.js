@@ -14,10 +14,12 @@ import {
   fetchCategories,
   fetchProductByCategory,
 } from './HomeThunks';
-import {changeId} from './HomeSlice';
+import {changeId, changeProductId} from './HomeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
-const Homescreen = () => {
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faHeart} from '@fortawesome/free-solid-svg-icons';
+const Homescreen = ({navigation}) => {
   const dispatch = useDispatch();
   const dataProducts = useSelector(state => state.home.dataProducts);
   const dataCategories = useSelector(state => state.home.dataCategories);
@@ -25,6 +27,10 @@ const Homescreen = () => {
     state => state.home.dataProductsByCategory,
   );
   const isClickedId = useSelector(state => state.home.isClickedId);
+  const isClickedProductId = useSelector(
+    state => state.home.isClickedProductId,
+  );
+
   const likeIcon = require('../../assets/images/like.png');
   const iconClose = require('../../assets/images/icon_close.png');
   const iconTune = require('../../assets/images/icon_tune.png');
@@ -37,54 +43,69 @@ const Homescreen = () => {
   useEffect(() => {
     dispatch(fetchProductByCategory(isClickedId));
   }, [isClickedId]);
-  const renderItem = item => (
-    <View
-      style={{
-        margin: 8,
-        padding: 16,
-        backgroundColor: '#fff',
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        borderRadius: 15,
-
-        elevation: 5,
-      }}>
-      <Image
-        source={likeIcon}
-        style={{
-          width: 16,
-          height: 16,
-          alignSelf: 'flex-end',
-        }}
-      />
-      <Image
-        source={{uri: item.image}}
-        style={{
-          resizeMode: 'contain', // dieu chinh hinh vua voi kich thuoc da cho
-          width: '100%',
-          height: 100,
-          alignSelf: 'center',
-        }}
-      />
-      <Text
-        style={{
-          fontSize: 18,
-          fontWeight: '500',
-          marginTop: 16,
-          marginBottom: 16,
+  const renderItem = item => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(changeProductId({isClickedProductId: item.id})),
+            navigation.navigate('Product', {
+              item: item,
+              category: isClickedId,
+            });
         }}>
-        {item.name}
-      </Text>
-      <Text style={{fontSize: 16, fontWeight: '500', color: '#CCC'}}>
-        ${item.price}
-      </Text>
-    </View>
-  );
+        <View
+          style={{
+            margin: 8,
+            padding: 16,
+            backgroundColor: '#fff',
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            borderRadius: 15,
+
+            elevation: 5,
+          }}>
+          <FontAwesomeIcon
+            icon={faHeart}
+            size={20}
+            color={isClickedProductId === item.id ? 'black' : '#fff'}
+            style={{
+              width: 16,
+              height: 16,
+              alignSelf: 'flex-end',
+            }}
+            fixedWidth
+          />
+
+          <Image
+            source={{uri: item.image}}
+            style={{
+              resizeMode: 'contain', // dieu chinh hinh vua voi kich thuoc da cho
+              width: '100%',
+              height: 100,
+              alignSelf: 'center',
+            }}
+          />
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: '500',
+              marginTop: 16,
+              marginBottom: 16,
+            }}>
+            {item.name}
+          </Text>
+          <Text style={{fontSize: 16, fontWeight: '500', color: '#CCC'}}>
+            ${item.price}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
   const renderItemCategories = item => (
     <TouchableOpacity
       onPress={() => dispatch(changeId({isClickedId: item.category}))}>
