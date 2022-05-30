@@ -17,6 +17,10 @@ import {
 import {changeId} from './HomeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
+import { callLogin } from '../authentication/AuthThunk';
+import { setAccessToken } from '../authentication/AuthSlice';
+import { getLocalStorage } from '../../common/LocalStorage';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
 const Homescreen = () => {
   const dispatch = useDispatch();
   const dataProducts = useSelector(state => state.home.dataProducts);
@@ -29,14 +33,47 @@ const Homescreen = () => {
   const iconClose = require('../../assets/images/icon_close.png');
   const iconTune = require('../../assets/images/icon_tune.png');
 
+
+  const user = {
+    email: "test1",
+    password: "123"
+  }
+
+  //token save in state.auth
+  const token = useSelector(state => state.auth.accessToken)
+
   useEffect(() => {
     dispatch(fetchProducts());
     dispatch(fetchCategories());
+
+    //call login api with user info and return accesstoken into state and Local Storage
+    console.log(user)
+    dispatch(callLogin(user));
+    
   }, []);
+
   // dadadadas
   useEffect(() => {
     dispatch(fetchProductByCategory(isClickedId));
   }, [isClickedId]);
+
+  //get local token from storage and store in state
+  getLocalStorage(KEY_LOCAL_TOKEN).then(data => {
+    dispatch(setAccessToken)
+  }).catch(error => {
+    console.warn(err.message);
+    switch (err.name) {
+      case 'NotFoundError':
+        console.log("Token not found on your device")
+        break;
+      case 'ExpiredError':
+        console.log("Your token has expired")
+        break;
+    }
+  })
+
+  
+
   const renderItem = item => (
     <View
       style={{
