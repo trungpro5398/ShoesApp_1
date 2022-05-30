@@ -14,6 +14,10 @@ import {
   fetchCategories,
   fetchProductByCategory,
 } from './HomeThunks';
+import {callLogin} from '../authentication/AuthThunk';
+import {setAccessToken} from '../authentication/AuthSlice';
+import {getLocalStorage} from '../../common/LocalStorage';
+import {KEY_LOCAL_TOKEN} from '../../common/Constant';
 import {changeId, changeProductId} from './HomeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
@@ -22,11 +26,6 @@ import {faHeart} from '@fortawesome/free-solid-svg-icons';
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
 import {changeLoading} from '../components/spinner/SpinnerSlice';
 const Homescreen = ({navigation}) => {
-import { callLogin } from '../authentication/AuthThunk';
-import { setAccessToken } from '../authentication/AuthSlice';
-import { getLocalStorage } from '../../common/LocalStorage';
-import { KEY_LOCAL_TOKEN } from '../../common/Constant';
-const Homescreen = () => {
   const dispatch = useDispatch();
   const dataProducts = useSelector(state => state.home.dataProducts);
   const dataCategories = useSelector(state => state.home.dataCategories);
@@ -42,15 +41,13 @@ const Homescreen = () => {
   const iconClose = require('../../assets/images/icon_close.png');
   const iconTune = require('../../assets/images/icon_tune.png');
 
-
   const user = {
-    email: "test1",
-    password: "123"
-  }
+    email: 'test1',
+    password: '123',
+  };
 
   //token save in state.auth
-  const token = useSelector(state => state.auth.accessToken)
-
+  const token = useSelector(state => state.auth.accessToken);
   useEffect(() => {
     dispatch(changeLoading(true));
     const fetchData = async () => {
@@ -65,9 +62,9 @@ const Homescreen = () => {
     dispatch(fetchCategories());
 
     //call login api with user info and return accesstoken into state and Local Storage
-    console.log(user)
+    console.log(user);
     dispatch(callLogin(user));
-    
+    console.log('token', token);
   }, []);
 
   // dadadadas
