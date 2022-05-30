@@ -19,6 +19,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faHeart} from '@fortawesome/free-solid-svg-icons';
+import Spinnerscreen from '../components/spinner/SpinnerScreen';
+import {changeLoading} from '../components/spinner/SpinnerSlice';
 const Homescreen = ({navigation}) => {
   const dispatch = useDispatch();
   const dataProducts = useSelector(state => state.home.dataProducts);
@@ -36,8 +38,15 @@ const Homescreen = ({navigation}) => {
   const iconTune = require('../../assets/images/icon_tune.png');
 
   useEffect(() => {
-    dispatch(fetchProducts());
-    dispatch(fetchCategories());
+    dispatch(changeLoading(true));
+    const fetchData = async () => {
+      dispatch(fetchProducts());
+      dispatch(fetchCategories());
+      setTimeout(() => {
+        dispatch(changeLoading(false));
+      }, 1000);
+    };
+    fetchData();
   }, []);
   // dadadadas
   useEffect(() => {
@@ -124,6 +133,7 @@ const Homescreen = ({navigation}) => {
   // safearea khong co default flex giong view
   return (
     <View style={{flex: 1}}>
+      <Spinnerscreen />
       <View
         style={{
           height: 260,

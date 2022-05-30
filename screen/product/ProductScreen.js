@@ -15,6 +15,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {fetchProductById} from './ProductThunks';
 import {resetDataProduct} from './ProductSlice';
 import Detailproductscreen from './DetailProductScreen';
+import Spinnerscreen from '../components/spinner/SpinnerScreen';
+import {changeLoading} from '../components/spinner/SpinnerSlice';
 const Productscreen = props => {
   const dispatch = useDispatch();
 
@@ -33,6 +35,7 @@ const Productscreen = props => {
     }
   };
   useEffect(() => {
+    dispatch(changeLoading(true));
     dispatch(resetDataProduct(item.id));
     dispatch(fetchProductById(item.id));
     if (dataProduct.length > 0) {
@@ -40,6 +43,9 @@ const Productscreen = props => {
         dispatch(fetchProductById(item.id));
       });
     }
+    setTimeout(() => {
+      dispatch(changeLoading(false));
+    }, 500);
   }, []);
   const renderItem = ({item}) => {
     return (
@@ -48,9 +54,9 @@ const Productscreen = props => {
       </View>
     );
   };
-  console.log('state', state);
   return dataProduct.length > 0 ? (
     <View style={{flex: 1}}>
+      <Spinnerscreen />
       <SafeAreaView style={{flex: 1, margin: 20}}>
         <View
           style={{
