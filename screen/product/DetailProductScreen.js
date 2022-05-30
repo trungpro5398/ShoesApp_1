@@ -3,7 +3,6 @@ import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
 
 const Detailproductscreen = props => {
   const item = props.item;
-  console.log(item);
   const item_size = item.size;
   const [isClickedSize, changeIsClickedSize] = useState('');
   const renderItem = ({item}) => {

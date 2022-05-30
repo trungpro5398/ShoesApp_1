@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +13,9 @@ import {
   fetchProducts,
   fetchCategories,
   fetchProductByCategory,
+  fetchUserLike,
+  fetchUserUnLike,
+  fetchProductFavorite,
 } from './HomeThunks';
 import {callLogin} from '../authentication/AuthThunk';
 import {setAccessToken} from '../authentication/AuthSlice';
@@ -27,8 +30,10 @@ import Spinnerscreen from '../components/spinner/SpinnerScreen';
 import {changeLoading} from '../components/spinner/SpinnerSlice';
 const Homescreen = ({navigation}) => {
   const dispatch = useDispatch();
+  const [countLke, changeCountLke] = useState(0);
   const dataProducts = useSelector(state => state.home.dataProducts);
   const dataCategories = useSelector(state => state.home.dataCategories);
+  const favoritedProducts = useSelector(state => state.home.favoritedProducts);
   const dataProductsByCategory = useSelector(
     state => state.home.dataProductsByCategory,
   );
@@ -56,21 +61,23 @@ const Homescreen = ({navigation}) => {
       setTimeout(() => {
         dispatch(changeLoading(false));
       }, 1000);
+      dispatch(callLogin(user));
     };
     fetchData();
-    dispatch(fetchProducts());
-    dispatch(fetchCategories());
-
-    //call login api with user info and return accesstoken into state and Local Storage
-    console.log(user);
-    dispatch(callLogin(user));
-    console.log('token', token);
   }, []);
 
   // dadadadas
   useEffect(() => {
     dispatch(fetchProductByCategory(isClickedId));
   }, [isClickedId]);
+
+  useEffect(() => {
+    dispatch(fetchProductFavorite(token));
+  }, [token, countLke]);
+  const likeOrUnlike = id => {
+    return favoritedProducts.includes(id);
+  };
+  console.log('favoritedProducts', favoritedProducts);
   const renderItem = item => {
     return (
       <TouchableOpacity
@@ -97,17 +104,26 @@ const Homescreen = ({navigation}) => {
 
             elevation: 5,
           }}>
-          <FontAwesomeIcon
-            icon={faHeart}
-            size={20}
-            color={isClickedProductId === item.id ? 'black' : '#fff'}
-            style={{
-              width: 16,
-              height: 16,
-              alignSelf: 'flex-end',
-            }}
-            fixedWidth
-          />
+          <TouchableOpacity
+            onPress={() => {
+              likeOrUnlike(item.id)
+                ? dispatch(fetchUserUnLike({id: item.id, token: token}))
+                : dispatch(fetchUserLike({id: item.id, token: token}));
+
+              changeCountLke(countLke + 1);
+            }}>
+            <FontAwesomeIcon
+              icon={faHeart}
+              size={20}
+              color={likeOrUnlike(item.id) ? 'black' : 'blue'}
+              style={{
+                width: 16,
+                height: 16,
+                alignSelf: 'flex-end',
+              }}
+              fixedWidth
+            />
+          </TouchableOpacity>
 
           <Image
             source={{uri: item.image}}

@@ -4,6 +4,9 @@ import {
   fetchProducts,
   fetchCategories,
   fetchProductByCategory,
+  fetchProductFavorite,
+  fetchUserLike,
+  fetchUserUnLike,
 } from './HomeThunks';
 const initialState = {
   dataProducts: [],
@@ -11,6 +14,7 @@ const initialState = {
   dataProductsByCategory: [],
   isClickedId: null,
   isClickedProductId: null,
+  favoritedProducts: [],
 };
 /*
 addCase trang thai tuong ung voi promise (fetch)(pending(chua load dc),fulfilled (da goi len va load dc),rejected)
@@ -49,6 +53,22 @@ const homeSlice = createSlice({
       })
       .addCase(fetchProductByCategory.fulfilled, (state, action) => {
         state.dataProductsByCategory = action.payload;
+      })
+      .addCase(fetchUserLike.pending, (state, action) => {
+        // fetch la promise ( pending, fulfilled, rejected)
+        state.isLoading = true;
+      })
+      .addCase(fetchUserLike.fulfilled, (state, action) => {})
+      .addCase(fetchUserUnLike.pending, (state, action) => {
+        // fetch la promise ( pending, fulfilled, rejected)
+        state.isLoading = true;
+      })
+      .addCase(fetchUserUnLike.fulfilled, (state, action) => {})
+      .addCase(fetchProductFavorite.pending, (state, action) => {
+        isLoading = true;
+      })
+      .addCase(fetchProductFavorite.fulfilled, (state, action) => {
+        state.favoritedProducts = action.payload.map(item => item.id);
       });
   },
 });

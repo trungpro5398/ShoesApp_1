@@ -72,6 +72,7 @@ const Productscreen = props => {
         <View style={styles.container}>
           <FlatList
             data={dataProduct}
+            keyExtractor={item => item.id}
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={renderItem}
