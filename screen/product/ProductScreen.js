@@ -17,6 +17,7 @@ import {resetDataProduct} from './ProductSlice';
 import Detailproductscreen from './DetailProductScreen';
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
 import {changeLoading} from '../components/spinner/SpinnerSlice';
+import {faHeart} from '@fortawesome/free-solid-svg-icons';
 const Productscreen = props => {
   const dispatch = useDispatch();
 
@@ -51,6 +52,28 @@ const Productscreen = props => {
     return (
       <View>
         <Image source={{uri: item.image}} style={styles.image} />
+        <TouchableOpacity
+          onPress={() => {
+            props.isLike
+              ? dispatch(fetchUserUnLike({id: item.id, token: token}))
+              : dispatch(fetchUserLike({id: item.id, token: token}));
+
+            changeCountLke(countLke + 1);
+          }}>
+          <FontAwesomeIcon
+            icon={faHeart}
+            size={20}
+            color={props.isLike ? 'black' : 'blue'}
+            style={{
+              width: 16,
+              height: 16,
+              position: 'absolute',
+              right: 10,
+              top: 10,
+            }}
+            fixedWidth
+          />
+        </TouchableOpacity>
       </View>
     );
   };
@@ -91,6 +114,8 @@ const Productscreen = props => {
           </View>
           <Detailproductscreen
             item={state < dataProduct.length ? dataProduct[state] : []}
+            category={category}
+            navigation={navigation}
           />
         </View>
       </SafeAreaView>
@@ -113,7 +138,7 @@ const styles = StyleSheet.create({
   pagination: {
     position: 'absolute',
     flexDirection: 'row',
-    top: '36%',
+    top: '34%',
     alignSelf: 'center',
   },
   paginText: {

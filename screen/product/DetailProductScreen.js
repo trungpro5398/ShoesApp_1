@@ -1,13 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Text, FlatList, TouchableOpacity} from 'react-native';
-
+import {useDispatch} from 'react-redux';
+import {addToCart} from '../cart/CartSlice';
 const Detailproductscreen = props => {
+  const [amount, changeAmount] = useState(1);
+  const dispatch = useDispatch();
+  const navigation = props.navigation;
   const item = props.item;
+  const category = props.category;
   const item_size = item.size;
-  const [isClickedSize, changeIsClickedSize] = useState('');
+  const [isClickedSize, changeIsClickedSize] = useState(null);
+  const [isClickedColor, changeIsClickedColor] = useState('grey');
   const renderItem = ({item}) => {
     return (
-      <TouchableOpacity onPress={() => changeIsClickedSize(item)}>
+      <TouchableOpacity
+        onPress={() => {
+          changeIsClickedSize(item), changeIsClickedColor('grey');
+        }}>
         <View
           style={[
             styles.container__size,
@@ -25,6 +34,7 @@ const Detailproductscreen = props => {
       <Text style={{color: 'black', fontSize: 25}}>{item.name}</Text>
       <Text style={{color: 'black', fontSize: 20}}>${item.price}</Text>
       <Text style={{color: 'black', fontSize: 20}}>Select a size</Text>
+      <Text style={{color: isClickedColor, fontSize: 15}}>Required</Text>
       <FlatList
         data={item_size}
         horizontal
@@ -45,13 +55,52 @@ const Detailproductscreen = props => {
       <Text style={{fontSize: 16, color: '#E4E3E4', marginTop: -10}}>
         {item.shortDescription}
       </Text>
-      <TouchableOpacity>
+      <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <TouchableOpacity
+          onPress={() => changeAmount(amount > 1 ? amount - 1 : 1)}>
+          <View style={styles.circle}>
+            <Text
+              style={[styles.amount, {color: amount === 1 ? 'grey' : 'black'}]}>
+              -
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.not_circle}>
+          <Text style={styles.amount}>{amount}</Text>
+        </View>
+
+        <TouchableOpacity onPress={() => changeAmount(amount + 1)}>
+          <View style={styles.circle}>
+            <Text style={styles.amount}>+</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          if (isClickedSize !== null) {
+            navigation.navigate('Cart');
+            dispatch(
+              addToCart({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                amount: amount,
+                image: item.image,
+                category: category,
+                size: isClickedSize,
+              }),
+            );
+          } else {
+            changeIsClickedColor('red');
+          }
+        }}>
         <View
           style={{
             backgroundColor: 'black',
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 10,
+            marginTop: 10,
           }}>
           <Text
             style={{
@@ -89,6 +138,23 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     marginTop: 20,
     shadowColor: '#000',
+  },
+  amount: {
+    fontSize: 30,
+  },
+  circle: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#E4E3E4',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  not_circle: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

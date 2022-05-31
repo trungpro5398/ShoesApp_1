@@ -86,6 +86,7 @@ const Homescreen = ({navigation}) => {
             navigation.navigate('Product', {
               item: item,
               category: isClickedId,
+              isLike: likeOrUnlike(item.id),
             });
         }}>
         <View
