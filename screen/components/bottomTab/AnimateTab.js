@@ -19,9 +19,9 @@ import Cartscreen from '../../cart/CartScreen';
 import Searchscreen from '../../search/SearchScreen';
 import Profilescreen from '../../profile/ProfileScreen';
 import Favoritescreen from '../../favorite/FavoriteScreen';
+import AuthScreen from '../../authentication/AuthScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 const animate1 = {
   0: {scale: 0.5, translateY: 7},
   0.92: {translateY: -34},
@@ -49,6 +49,7 @@ const FirstScreenNavigator = () => {
       <Stack.Screen name="Home" component={Homescreen} />
       <Stack.Screen name="Product" component={Productscreen} />
       <Stack.Screen name="Cart" component={Cartscreen} />
+      <Stack.Screen name="Auth" component={AuthScreen} />
     </Stack.Navigator>
   );
 };
