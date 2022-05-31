@@ -114,7 +114,7 @@ const Productscreen = props => {
           </View>
           <Detailproductscreen
             item={state < dataProduct.length ? dataProduct[state] : []}
-            category={category}
+            ca
             navigation={navigation}
           />
         </View>
@@ -128,17 +128,15 @@ const Productscreen = props => {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
-
-    paddingTop: 10,
   },
   image: {
     width: 310,
-    height: 300,
+    height: 150,
   },
   pagination: {
     position: 'absolute',
     flexDirection: 'row',
-    top: '34%',
+    top: '24%',
     alignSelf: 'center',
   },
   paginText: {
