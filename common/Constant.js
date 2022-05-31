@@ -1,1 +1,1 @@
-export const KEY_LOCAL_TOKEN = 'accessToken'
+export const KEY_LOCAL_TOKEN = 'accessToken';
