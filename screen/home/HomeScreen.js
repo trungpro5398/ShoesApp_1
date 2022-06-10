@@ -25,7 +25,7 @@ import {changeId, changeProductId} from './HomeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHeart} from '@fortawesome/free-solid-svg-icons';
+import {faHeart, faSearch} from '@fortawesome/free-solid-svg-icons';
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
 import {changeLoading} from '../components/spinner/SpinnerSlice';
 const Homescreen = ({navigation}) => {
@@ -77,7 +77,7 @@ const Homescreen = ({navigation}) => {
   const likeOrUnlike = id => {
     return favoritedProducts.includes(id);
   };
-  console.log('favoritedProducts', favoritedProducts);
+  console.log('token', token);
   const renderItem = item => {
     return (
       <TouchableOpacity
@@ -191,7 +191,7 @@ const Homescreen = ({navigation}) => {
             justifyContent: 'space-between',
           }}>
           <Image source={iconClose} style={{width: 20, height: 20}} />
-          <Image source={iconTune} style={{width: 20, height: 20}} />
+          <FontAwesomeIcon icon={faSearch} size={20} color="black" />
         </View>
 
         <View>
