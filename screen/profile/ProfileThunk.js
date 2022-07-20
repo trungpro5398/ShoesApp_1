@@ -1,7 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { KEY_LOCAL_TOKEN } from "../../common/Constant";
-import { useSelector, useDispatch } from "react-redux";
 
 
 export const getProfileInformation = createAsyncThunk(
@@ -22,6 +20,24 @@ export const getProfileInformation = createAsyncThunk(
             return Promise.reject(json.message);
         }
         console.log(json)
+        return json.content
+    }
+)
+
+export const editProfileInformation = createAsyncThunk(
+    'User/EditProfile',
+    async ({ token, profile }) => {
+        const response = await fetch('https://shop.cyberlearn.vn/api/Users/updateProfile', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(profile)
+        })
+
+
+        const json = await response.json()
         return json.content
     }
 )

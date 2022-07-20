@@ -156,7 +156,7 @@ const Homescreen = ({ navigation }) => {
   };
   const renderItemCategories = item => (
     <TouchableOpacity
-      onPress={() => dispatch(changeId({ isClickedId: item.category }))}>
+      onPress={() => dispatch(changeId({ isClickedId: item.id }))}>
       <Text
         style={{
           color: isClickedId === item.category ? '#FFF' : 'grey',

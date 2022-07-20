@@ -9,7 +9,7 @@ import Header from '../components/header/Header';
 import ContextButton from '../components/Button/ContextButton';
 import { removeLocalStorage } from '../../common/LocalStorage';
 import { KEY_LOCAL_TOKEN } from '../../common/Constant';
-import { useNavigation } from '@react-navigation/native';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { getLocalAccessToken } from '../authentication/AuthThunk';
 import { getProfileInformation } from './ProfileThunk';
 const Profilescreen = () => {
@@ -19,6 +19,7 @@ const Profilescreen = () => {
   const accessToken = useSelector(state => state.auth.accessToken)
   const isLoading = useSelector(state => state.profile.isLoading)
   const profileDetail = useSelector(state => state.profile.profileDetail)
+  const isFocus = useIsFocused()
   const logOut = () => {
 
     removeLocalStorage(KEY_LOCAL_TOKEN)
@@ -29,13 +30,13 @@ const Profilescreen = () => {
   }
 
   const editProfile = () => {
-    navigation.navigate("ProfileView", profileDetail)
+    navigation.navigate("ProfileView", { profileDetail, accessToken })
   }
 
 
   useEffect(() => {
     dispatch(getProfileInformation(accessToken))
-  }, [accessToken])
+  }, [accessToken, isFocus])
 
   return (
     <View>

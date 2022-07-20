@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfileInformation } from "./ProfileThunk";
+import { getProfileInformation, editProfileInformation } from "./ProfileThunk";
 
 const initialState = {
     profileDetail: {},
@@ -21,6 +21,9 @@ const profileSlice = createSlice({
             //on success
             state.profileDetail = action.payload
             state.isLoading = false
+        }).addCase(editProfileInformation.fulfilled, (state, action) => {
+            //on success
+            console.log('Updated information')
         })
 
     }
