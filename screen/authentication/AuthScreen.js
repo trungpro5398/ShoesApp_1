@@ -7,18 +7,18 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {useDispatch, useSelector} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {FONT} from '../../common/Theme';
-import {callLogin, callSignup, getLocalAccessToken} from './AuthThunk';
-import {logOut, setAuthMode} from './AuthSlice';
-import {useNavigation} from '@react-navigation/native';
-import {removeLocalStorage} from '../../common/LocalStorage';
-import {KEY_LOCAL_TOKEN} from '../../common/Constant';
+import { FONT } from '../../common/Theme';
+import { callLogin, callSignup, getLocalAccessToken } from './AuthThunk';
+import { logOut, setAuthMode } from './AuthSlice';
+import { useNavigation } from '@react-navigation/native';
+import { removeLocalStorage } from '../../common/LocalStorage';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
 
 const AuthScreen = () => {
   const navigation = useNavigation();
@@ -30,10 +30,9 @@ const AuthScreen = () => {
   const dispatch = useDispatch();
 
   // Store data for login
-  let loginInfo = {
-    email: '',
-    password: '',
-  };
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const emailPattern = '/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/';
 
@@ -67,6 +66,11 @@ const AuthScreen = () => {
     // if(loginInfo.email.match(emailPattern) && loginInfo.password != "") {
     //     dispatch(callLogin(loginInfo))
     // }
+    const loginInfo = {
+      email,
+      password
+    }
+    console.log(loginInfo)
     dispatch(callLogin(loginInfo));
   };
 
@@ -74,6 +78,7 @@ const AuthScreen = () => {
     if (localToken == undefined || localToken == '') {
       console.log('Not loggin');
     } else {
+      console.log(localToken)
       navigation.navigate('Home');
     }
   };
@@ -114,6 +119,7 @@ const AuthScreen = () => {
   useEffect(() => {
     dispatch(getLocalAccessToken());
     checkLogin();
+
   }, [localToken]);
 
   return (
@@ -121,7 +127,7 @@ const AuthScreen = () => {
       style={styles.container}
       behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       enabled={false}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Image source={bg_login} style={styles.img_login} resizeMode="cover" />
       </View>
       <LinearGradient
@@ -137,16 +143,18 @@ const AuthScreen = () => {
           {login ? (
             <>
               <Text style={styles.title_text}>Log in</Text>
+
               <TextInput
                 style={styles.input_field}
                 placeholder="Email"
-                onChangeText={signinEmailHandler}
+                onChangeText={(email) => setEmail(email)}
+
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
                 secureTextEntry
-                onChangeText={signinPasswordHandler}
+                onChangeText={(password) => setPassword(password)}
               />
               <TouchableOpacity
                 style={styles.btn_authen}
@@ -174,7 +182,7 @@ const AuthScreen = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity>
-                <Text style={[styles.footer_textTouch, {alignSelf: 'center'}]}>
+                <Text style={[styles.footer_textTouch, { alignSelf: 'center' }]}>
                   Forgot your password?
                 </Text>
               </TouchableOpacity>
@@ -185,31 +193,31 @@ const AuthScreen = () => {
               <TextInput
                 style={styles.input_field}
                 placeholder="Email"
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
                 secureTextEntry
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
 
               <TextInput
                 style={styles.input_field}
                 placeholder="Name"
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Gender"
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Phone"
-                onChangeText={() => {}}
+                onChangeText={() => { }}
               />
-              <TouchableOpacity style={styles.btn_authen} onPress={() => {}}>
+              <TouchableOpacity style={styles.btn_authen} onPress={() => { }}>
                 <Text style={styles.btn_authen_text}>Agree & Continue</Text>
               </TouchableOpacity>
 
@@ -217,7 +225,7 @@ const AuthScreen = () => {
                 <Text style={styles.footer_text}>
                   By selecting Agree & Continue, I agree to
                 </Text>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => { }}>
                   <Text style={styles.footer_textTouch}>
                     Term of Service and Privacy Policy
                   </Text>
@@ -269,7 +277,7 @@ const styles = StyleSheet.create({
   },
 
   title_text: {
-    fontFamily: FONT.semiBold,
+    // fontFamily: FONT.semiBold,
     fontSize: 24,
     bottom: 16,
     color: 'white',
@@ -286,7 +294,7 @@ const styles = StyleSheet.create({
 
   btn_authen_text: {
     color: 'white',
-    fontFamily: FONT.medium,
+    // fontFamily: FONT.medium,
     fontSize: 15,
   },
 
@@ -300,7 +308,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
   },
   btn_socialLogin_text: {
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     fontSize: 12,
     color: 'black',
     marginLeft: 20,
@@ -309,7 +317,7 @@ const styles = StyleSheet.create({
 
   or_text: {
     alignSelf: 'center',
-    fontFamily: FONT.medium,
+    // fontFamily: FONT.medium,
     fontSize: 15,
     color: 'white',
     marginTop: 24,
@@ -330,13 +338,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   footer_text: {
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     fontSize: 14,
     color: 'white',
   },
   footer_textTouch: {
     color: '#03D396',
-    fontFamily: FONT.regular,
+    // fontFamily: FONT.regular,
     fontSize: 14,
   },
 });

@@ -1,13 +1,13 @@
-import React, {useEffect, useRef} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React, { useEffect, useRef } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import * as Animatable from 'react-native-animatable';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import {
-  faUtensils,
+  faHome,
   faMagnifyingGlass,
   faHeart,
   faUser,
@@ -20,36 +20,39 @@ import Searchscreen from '../../search/SearchScreen';
 import Profilescreen from '../../profile/ProfileScreen';
 import Favoritescreen from '../../favorite/FavoriteScreen';
 import AuthScreen from '../../authentication/AuthScreen';
+import ProfileView from '../../profile/ProfileView';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const animate1 = {
-  0: {scale: 0.5, translateY: 7},
-  0.92: {translateY: -34},
-  1: {scale: 1.2, translateY: -24},
+  0: { scale: 0.5, translateY: 7 },
+  0.92: { translateY: -34 },
+  1: { scale: 1.2, translateY: -24 },
 };
 const animate2 = {
-  0: {scale: 1.2, translateY: -24},
-  1: {scale: 1, translateY: 7},
+  0: { scale: 1.2, translateY: -24 },
+  1: { scale: 1, translateY: 7 },
 };
 
 const circle1 = {
-  0: {scale: 0},
-  0.3: {scale: 0.9},
-  0.5: {scale: 0.2},
-  0.8: {scale: 0.7},
-  1: {scale: 1},
+  0: { scale: 0 },
+  0.3: { scale: 0.9 },
+  0.5: { scale: 0.2 },
+  0.8: { scale: 0.7 },
+  1: { scale: 1 },
 };
-const circle2 = {0: {scale: 1}, 1: {scale: 0}};
+const circle2 = { 0: { scale: 1 }, 1: { scale: 0 } };
 const FirstScreenNavigator = () => {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Home" component={Homescreen} />
-      <Stack.Screen name="Product" component={Productscreen} />
-      <Stack.Screen name="Cart" component={Cartscreen} />
       <Stack.Screen name="Auth" component={AuthScreen} />
+      <Stack.Screen name="Product" component={Productscreen} />
+      <Stack.Screen name="Home" component={Homescreen} />
+      <Stack.Screen name="Cart" component={Cartscreen} />
+      <Stack.Screen name="ProfileView" component={ProfileView} />
+
     </Stack.Navigator>
   );
 };
@@ -57,8 +60,8 @@ const TabArray = [
   {
     route: 'Home',
     label: 'Home',
-    icon: faUtensils,
-    component: FirstScreenNavigator,
+    icon: faHome,
+    component: Homescreen,
   },
   {
     route: 'Search',
@@ -88,7 +91,7 @@ const TabArray = [
 ];
 
 const TabButton = props => {
-  const {item, onPress, accessibilityState} = props;
+  const { item, onPress, accessibilityState } = props;
   const focused = accessibilityState.selected;
   const viewRef = useRef(null);
   const circleRef = useRef(null);
@@ -98,11 +101,11 @@ const TabButton = props => {
     if (focused) {
       viewRef.current.animate(animate1);
       circleRef.current.animate(circle1);
-      textRef.current.transitionTo({scale: 1});
+      textRef.current.transitionTo({ scale: 1 });
     } else {
       viewRef.current.animate(animate2);
       circleRef.current.animate(circle2);
-      textRef.current.transitionTo({scale: 0});
+      textRef.current.transitionTo({ scale: 0 });
     }
   }, [focused]);
 

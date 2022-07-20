@@ -12,7 +12,7 @@ export const saveLocalStorage = (key, data) => {
   storage.save({
     key,
     data,
-    expires: 1000 * 3600 * 8,
+    expires: 1000 * 3600 * 1,
   });
 };
 
@@ -31,5 +31,5 @@ export const getLocalStorage = async key => {
 };
 
 export const removeLocalStorage = key => {
-  storage.remove({key: key});
+  storage.remove({ key: key });
 };

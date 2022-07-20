@@ -1,8 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {KEY_LOCAL_TOKEN} from '../../common/Constant';
-import {saveLocalStorage, getLocalStorage} from '../../common/LocalStorage';
+import { createSlice } from '@reduxjs/toolkit';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
+import { saveLocalStorage, getLocalStorage } from '../../common/LocalStorage';
 
-import {callLogin, callSignup, getLocalAccessToken} from './AuthThunk';
+import { callLogin, callSignup, getLocalAccessToken } from './AuthThunk';
 
 const initialState = {
   loginStatus: false,
@@ -16,7 +16,6 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logOut: (state, action) => {
-      saveLocalStorage(KEY_LOCAL_TOKEN, '');
       state.accessToken = '';
     },
     setAccessToken: (state, action) => {
@@ -51,5 +50,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {logOut, setAuthMode} = authSlice.actions;
+export const { logOut, setAuthMode } = authSlice.actions;
 export default authSlice.reducer;
