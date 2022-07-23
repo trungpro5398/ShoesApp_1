@@ -14,6 +14,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-ShoesApp-ShoesAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-ShoesApp-ShoesAppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A58E0C51288B01F4003E8932 /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A58E0C4E288B01F4003E8932 /* Poppins-Regular.ttf */; };
+		A58E0C52288B01F4003E8932 /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A58E0C4F288B01F4003E8932 /* Poppins-Medium.ttf */; };
+		A58E0C53288B01F4003E8932 /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A58E0C50288B01F4003E8932 /* Poppins-SemiBold.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,9 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-ShoesApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ShoesApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ShoesApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-ShoesApp-ShoesAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShoesApp-ShoesAppTests.release.xcconfig"; path = "Target Support Files/Pods-ShoesApp-ShoesAppTests/Pods-ShoesApp-ShoesAppTests.release.xcconfig"; sourceTree = "<group>"; };
+		A58E0C4E288B01F4003E8932 /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Regular.ttf"; path = "../../assets/fonts/Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		A58E0C4F288B01F4003E8932 /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-Medium.ttf"; path = "../../assets/fonts/Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		A58E0C50288B01F4003E8932 /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Poppins-SemiBold.ttf"; path = "../../assets/fonts/Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -86,6 +92,7 @@
 		13B07FAE1A68108700A75B9A /* ShoesApp */ = {
 			isa = PBXGroup;
 			children = (
+				A58E0C4D288B016F003E8932 /* Resources */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -135,6 +142,16 @@
 				00E356EE1AD99517003FC87E /* ShoesAppTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		A58E0C4D288B016F003E8932 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A58E0C4F288B01F4003E8932 /* Poppins-Medium.ttf */,
+				A58E0C4E288B01F4003E8932 /* Poppins-Regular.ttf */,
+				A58E0C50288B01F4003E8932 /* Poppins-SemiBold.ttf */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -242,6 +259,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A58E0C53288B01F4003E8932 /* Poppins-SemiBold.ttf in Resources */,
+				A58E0C51288B01F4003E8932 /* Poppins-Regular.ttf in Resources */,
+				A58E0C52288B01F4003E8932 /* Poppins-Medium.ttf in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);

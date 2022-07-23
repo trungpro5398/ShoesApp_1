@@ -16,10 +16,10 @@ export const getProfileInformation = createAsyncThunk(
         const json = await response.json()
 
         if (!response.ok) {
-            console.log(json.message)
+
             return Promise.reject(json.message);
         }
-        console.log(json)
+
         return json.content
     }
 )
@@ -38,6 +38,32 @@ export const editProfileInformation = createAsyncThunk(
 
 
         const json = await response.json()
+
+        if (!response.ok) {
+
+            return Promise.reject(json.message);
+        }
+
+        return json.content
+    }
+)
+
+export const changePassword = createAsyncThunk(
+    'User/ChangePassword',
+    async ({ token, password }) => {
+        const response = await fetch('https://shop.cyberlearn.vn/api/Users/changePassword', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(password)
+        })
+
+        const json = await response.json()
+        if (!response.ok) {
+            return Promise.reject(json.message);
+        }
         return json.content
     }
 )

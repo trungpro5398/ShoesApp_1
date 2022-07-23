@@ -45,11 +45,12 @@ export const callSignup = createAsyncThunk('User/signup', async user => {
     body: JSON.stringify(user),
   };
 
-  const res = await fetch('http://svcy3.myclass.vn/api/Users/signup', options);
+  const res = await fetch('https://shop.cyberlearn.vn/api/Users/signup', options);
   const json = await res.json();
 
   //Catch signup failed
   if (!res.ok) {
+    console.log(json.message)
     return Promise.reject(json.message);
   }
 

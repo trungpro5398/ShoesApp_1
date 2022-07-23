@@ -16,7 +16,7 @@ export default FirstScreenNavigator = () => {
                 headerShown: false,
             }}>
             <Stack.Screen name="Auth" component={AuthScreen} />
-            <Stack.Screen name="Home" component={Animatetab} />
+            <Stack.Screen name="AnimateTab" component={Animatetab} />
             <Stack.Screen name="ProfileView" component={ProfileView} />
             <Stack.Screen name="Product" component={Productscreen} />
         </Stack.Navigator>

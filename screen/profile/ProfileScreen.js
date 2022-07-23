@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { View, StyleSheet, Text, SafeAreaView, Image } from 'react-native';
-import { faInfoCircle, faListUl, faArrowRightFromBracket, faUser, faBox } from '@fortawesome/free-solid-svg-icons'
+import { Portal, Modal, Button, TextInput, Badge } from 'react-native-paper';
+import { faKey, faArrowRightFromBracket, faUser, faBox, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 
 import { FONT } from '../../common/Theme';
@@ -11,15 +12,19 @@ import { removeLocalStorage } from '../../common/LocalStorage';
 import { KEY_LOCAL_TOKEN } from '../../common/Constant';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import { getLocalAccessToken } from '../authentication/AuthThunk';
-import { getProfileInformation } from './ProfileThunk';
+import { changePassword, getProfileInformation } from './ProfileThunk';
 const Profilescreen = () => {
   const dispatch = useDispatch()
-  let avatar = "http://svcy3.myclass.vn/images/user-icon.png"
   const navigation = useNavigation()
   const accessToken = useSelector(state => state.auth.accessToken)
   const isLoading = useSelector(state => state.profile.isLoading)
   const profileDetail = useSelector(state => state.profile.profileDetail)
   const isFocus = useIsFocused()
+  const [modalVisible, setModalVisible] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const orders = profileDetail.ordersHistory
+
+  //Logout
   const logOut = () => {
 
     removeLocalStorage(KEY_LOCAL_TOKEN)
@@ -29,18 +34,49 @@ const Profilescreen = () => {
 
   }
 
+  //Edit Profile
   const editProfile = () => {
     navigation.navigate("ProfileView", { profileDetail, accessToken })
   }
 
+  //Change password
+  const showModal = () => setModalVisible(true)
+  const hideModal = () => setModalVisible(false)
+
+
+
+  const confirmChangePassword = () => {
+    const newPass = {
+      newPassword
+    }
+    console.log(newPass.password)
+    dispatch(changePassword({ token: accessToken, password: newPass }))
+    hideModal()
+
+  }
 
   useEffect(() => {
     dispatch(getProfileInformation(accessToken))
   }, [accessToken, isFocus])
 
+
+
+
   return (
     <View>
       <Header />
+      <Portal>
+
+
+        <Modal visible={modalVisible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
+          <Text style={{ fontFamily: FONT.regular, fontSize: 16, alignSelf: 'center', marginBottom: 8 }}>Type in your new password</Text>
+          <TextInput label="New Password" secureTextEntry defaultValue={newPassword} onChangeText={data => setNewPassword(data)} />
+          <View style={styles.modalButtonContainer}>
+            <Button mode='contained' color='white' onPress={() => hideModal()}>Cancel</Button>
+            <Button mode='contained' color='black' onPress={() => confirmChangePassword()}>Confirm</Button>
+          </View>
+        </Modal>
+      </Portal>
       <View style={styles.profile}>
         <View style={styles.circleView}>
           <Image source={{ uri: profileDetail.avatar }} resizeMode="contain" style={styles.avatar} />
@@ -49,7 +85,8 @@ const Profilescreen = () => {
       </View>
       <View style={styles.buttonContainer}>
         <ContextButton icon={faUser} size={24} color="#000" text="Edit Profile" onPress={editProfile} />
-        <ContextButton icon={faBox} size={24} color="#000" text="View Orders" />
+        <ContextButton icon={faKey} size={24} color="#000" text="Change password" onPress={showModal} />
+        <ContextButton icon={faBox} size={24} color="#000" text="View Orders" badge={orders?.length} />
         <ContextButton icon={faArrowRightFromBracket} size={24} color="#EB1D36" text="Logout" onPress={logOut} />
       </View>
     </View>
@@ -72,7 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 75,
     backgroundColor: "#FFF",
     borderWidth: 3,
-    borderColor: 'blue',
+    borderColor: 'black',
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -85,8 +122,8 @@ const styles = StyleSheet.create({
   },
 
   profileName: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontFamily: FONT.semiBold,
+    fontSize: 24,
     marginBottom: 8
   },
 
@@ -96,6 +133,19 @@ const styles = StyleSheet.create({
   logoutBtn: {
 
   },
+
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 16,
+    margin: 16,
+    borderRadius: 5
+  },
+
+  modalButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-evenly",
+    marginTop: 24
+  }
 });
 
 export default Profilescreen;

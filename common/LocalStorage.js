@@ -12,7 +12,7 @@ export const saveLocalStorage = (key, data) => {
   storage.save({
     key,
     data,
-    expires: 1000 * 3600 * 1,
+    expires: 1000 * 3600 * 3,
   });
 };
 

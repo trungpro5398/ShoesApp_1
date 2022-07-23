@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getProfileInformation, editProfileInformation } from "./ProfileThunk";
+import { getProfileInformation, editProfileInformation, changePassword } from "./ProfileThunk";
 
 const initialState = {
     profileDetail: {},
@@ -15,15 +15,18 @@ const profileSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(getProfileInformation.pending, (state, action) => {
             //on pending
-            console.log('loading profile')
+            console.log('Đang lấy thông tin profile...')
             state.isLoading = true
         }).addCase(getProfileInformation.fulfilled, (state, action) => {
             //on success
+            console.log('Lấy thông tin profile thành công')
             state.profileDetail = action.payload
             state.isLoading = false
         }).addCase(editProfileInformation.fulfilled, (state, action) => {
             //on success
-            console.log('Updated information')
+            console.log('Updated profile thành công')
+        }).addCase(changePassword.fulfilled, (state, action) => {
+            console.log(`Message: ${action.payload}`)
         })
 
     }

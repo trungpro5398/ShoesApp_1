@@ -141,11 +141,20 @@ const Animatetab = () => {
           right: 16,
           left: 16,
           borderRadius: 16,
+          shadowOffset: {
+            width: 0,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+
+          elevation: 5,
         },
       }}>
       {TabArray.map((item, index) => {
         return (
           <Tab.Screen
+            key={index}
             name={item.route}
             component={item.component}
             options={{
@@ -184,6 +193,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'black',
     borderRadius: 25,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   text: {
     fontSize: 10,

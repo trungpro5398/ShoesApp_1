@@ -28,6 +28,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
 import { changeLoading } from '../components/spinner/SpinnerSlice';
+import { FONT } from '../../common/Theme';
 const Homescreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [countLke, changeCountLke] = useState(0);
@@ -62,7 +63,7 @@ const Homescreen = ({ navigation }) => {
       dispatch(fetchCategories());
       setTimeout(() => {
         dispatch(changeLoading(false));
-      }, 1000);
+      }, 2000);
 
     };
 
@@ -91,7 +92,9 @@ const Homescreen = ({ navigation }) => {
               category: isClickedId,
               isLike: likeOrUnlike(item.id),
             });
-        }}>
+        }}
+        key={item.id}
+      >
         <View
           style={{
             margin: 8,
@@ -119,7 +122,7 @@ const Homescreen = ({ navigation }) => {
             <FontAwesomeIcon
               icon={faHeart}
               size={20}
-              color={likeOrUnlike(item.id) ? 'black' : 'blue'}
+              color={likeOrUnlike(item.id) ? 'red' : 'gray'}
               style={{
                 width: 16,
                 height: 16,
@@ -140,6 +143,7 @@ const Homescreen = ({ navigation }) => {
           />
           <Text
             style={{
+              fontFamily: FONT.semiBold,
               fontSize: 18,
               fontWeight: '500',
               marginTop: 16,
@@ -147,7 +151,7 @@ const Homescreen = ({ navigation }) => {
             }}>
             {item.name}
           </Text>
-          <Text style={{ fontSize: 16, fontWeight: '500', color: '#CCC' }}>
+          <Text style={{ fontSize: 16, fontWeight: '500', color: 'gray' }}>
             ${item.price}
           </Text>
         </View>
@@ -159,7 +163,7 @@ const Homescreen = ({ navigation }) => {
       onPress={() => dispatch(changeId({ isClickedId: item.id }))}>
       <Text
         style={{
-          color: isClickedId === item.category ? '#FFF' : 'grey',
+          color: isClickedId === item.id ? '#FFF' : 'grey',
           margin: 5,
           fontSize: 18,
           fontWeight: '500',
