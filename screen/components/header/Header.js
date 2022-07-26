@@ -4,7 +4,7 @@ import { faArrowLeft, faListUl } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { FONT } from '../../../common/Theme'
 import { useNavigation } from '@react-navigation/native'
-const Header = () => {
+const Header = (props) => {
   const navigation = useNavigation()
   return (
     <SafeAreaView style={styles.container}>
@@ -12,7 +12,7 @@ const Header = () => {
         <FontAwesomeIcon icon={faArrowLeft} color="#000" size={24} />
       </TouchableOpacity>
 
-      <Text style={styles.title}>Profile</Text>
+      <Text style={styles.title}>{props.title}</Text>
       <TouchableOpacity style={styles.option_button}>
         <FontAwesomeIcon icon={faListUl} color="#000" size={24} />
       </TouchableOpacity>

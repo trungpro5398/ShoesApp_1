@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { View, StyleSheet, Text, SafeAreaView, Image } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, Image, ScrollView } from 'react-native';
 import { Portal, Modal, Button, TextInput, Badge } from 'react-native-paper';
 import { faKey, faArrowRightFromBracket, faUser, faBox, faEye } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
@@ -55,6 +55,11 @@ const Profilescreen = () => {
 
   }
 
+  //View order
+  const viewOrder = () => {
+    navigation.navigate("Order")
+  }
+
   useEffect(() => {
     dispatch(getProfileInformation(accessToken))
   }, [accessToken, isFocus])
@@ -64,7 +69,7 @@ const Profilescreen = () => {
 
   return (
     <View>
-      <Header />
+      <Header title="Profile" />
       <Portal>
 
 
@@ -86,7 +91,7 @@ const Profilescreen = () => {
       <View style={styles.buttonContainer}>
         <ContextButton icon={faUser} size={24} color="#000" text="Edit Profile" onPress={editProfile} />
         <ContextButton icon={faKey} size={24} color="#000" text="Change password" onPress={showModal} />
-        <ContextButton icon={faBox} size={24} color="#000" text="View Orders" badge={orders?.length} />
+        <ContextButton icon={faBox} size={24} color="#000" text="View Orders" onPress={viewOrder} badge={orders?.length} />
         <ContextButton icon={faArrowRightFromBracket} size={24} color="#EB1D36" text="Logout" onPress={logOut} />
       </View>
     </View>

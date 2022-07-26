@@ -64,7 +64,7 @@ const ProfileView = ({ route, navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header />
+            <Header title="Edit Profile" />
             <View style={styles.profile}>
                 <View style={styles.circleView}>
                     <Image source={{ uri: profileDetail.avatar }} resizeMode="contain" style={styles.avatar} />

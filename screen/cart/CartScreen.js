@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -18,15 +18,56 @@ import {
   RectButton,
   TouchableWithoutFeedback,
 } from 'react-native-gesture-handler';
+import { Portal, Modal } from 'react-native-paper';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faArrowLeft, faTrashCan, faFaceFrown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTrashCan, faFaceFrown, faCreditCard } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { removeFromCart } from './CartSlice';
+import { clearMessage, removeFromCart } from './CartSlice';
 import { FONT } from '../../common/Theme';
+import { placeOrder } from './CartThunk';
+import { getProfileInformation } from '../profile/ProfileThunk';
 const Cartscreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const dataProducts = useSelector(state => state.cart.dataProducts);
+  const profileDetail = useSelector(state => state.profile.profileDetail)
+  const accessToken = useSelector(state => state.auth.accessToken)
+  const message = useSelector(state => state.cart.message)
+  const [modal, setModal] = useState(false)
+
+
+  const showModal = () => {
+    setModal(true)
+  }
+  const hideModal = () => {
+    setModal(false)
+    dispatch(clearMessage())
+  }
+  const onPressPlaceOrder = () => {
+    let order = {
+      productId: "",
+      quantity: 1
+    }
+
+    let orderArray = []
+
+    dataProducts.map(
+      (item) => orderArray.push({ productId: item.id, quantity: item.amount })
+    )
+    let orderData = {
+      orderDetail: orderArray,
+      email: profileDetail.email
+    }
+    console.log(orderData)
+    dispatch(placeOrder(orderData))
+  }
+
+  useEffect(() => {
+    dispatch(getProfileInformation(accessToken))
+  }, [])
+
+
+
   const totalPriceProducts = dataProducts.reduce(
     (total, item) => total + item.amount * item.price,
     0,
@@ -112,6 +153,11 @@ const Cartscreen = ({ navigation }) => {
   }
   else return (
     <SafeAreaView style={{ margin: 20 }}>
+      {/* <Portal>
+        <Modal visible={modal} contentContainerStyle={styles.modalContainer} onDismiss={() => hideModal()}>
+          <Text style={styles.modalText}>{message}</Text>
+        </Modal>
+      </Portal> */}
       <TouchableOpacity
         onPress={() => {
           navigation.goBack();
@@ -149,7 +195,13 @@ const Cartscreen = ({ navigation }) => {
         <Text style={{ fontSize: 20, color: '#ff4590' }}>
           $ {totalPriceProducts}
         </Text>
+
       </View>
+      <TouchableOpacity style={styles.placeOrderBtn} onPress={() => onPressPlaceOrder()}>
+        <FontAwesomeIcon icon={faCreditCard} size={24} color="white" />
+        <Text style={styles.placeOrderText}>Place order</Text>
+      </TouchableOpacity>
+
     </SafeAreaView>
   );
 };
@@ -193,6 +245,37 @@ const styles = StyleSheet.create({
 
   name: {
     fontFamily: FONT.semiBold,
+  },
+
+  placeOrderBtn: {
+    backgroundColor: "black",
+    padding: 16,
+    flexDirection: 'row',
+    alignItems: "center",
+    borderRadius: 10,
+    width: "50%",
+    alignSelf: "center",
+    marginTop: 16
+  },
+  placeOrderText: {
+    fontFamily: FONT.semiBold,
+    fontSize: 18,
+    color: "white",
+    marginLeft: 8
+  },
+
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 16,
+    margin: 16,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  modalText: {
+    fontFamily: FONT.semiBold,
+    fontSize: 16
   }
 });
 

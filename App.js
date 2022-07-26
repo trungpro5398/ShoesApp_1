@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import FirstScreenNavigator from './screen/components/StackNav/FirstScreenNavigator';
 const Stack = createNativeStackNavigator()
 const App = () => {
+
   return (
     <Provider store={store}>
       <NavigationContainer>
