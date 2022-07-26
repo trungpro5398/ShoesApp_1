@@ -23,8 +23,8 @@ const MyOrderScreen = () => {
         <View style={styles.orderContainer} key={item.id}>
             <View style={styles.orderTitle}>
 
-                <Text style={{ fontFamily: FONT.medium, fontSize: 16, alignSelf: "flex-start" }}>{`Order ID: ${item.id}`}</Text>
-                <Text style={{ fontFamily: FONT.regular, fontSize: 16, color: "gray", alignSelf: "flex-end" }}>{`Time: ${item.date}`}</Text>
+                <Text style={{ fontFamily: FONT.medium, fontSize: 16, color: "black" }}>{`Order ID: ${item.id}`}</Text>
+                <Text style={{ fontFamily: FONT.regular, fontSize: 16, color: "gray", marginLeft: 8 }}>{`Date: ${item.date.split("T")[0]}`}</Text>
             </View>
             {item.orderDetail.map(orderItem => (
                 <Item name={orderItem.name} imgLink={orderItem.image} />
@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
     },
 
     orderTitle: {
-        flexDirection: 'row'
+        flexDirection: 'row',
+
+
     }
 })
