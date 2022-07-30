@@ -7,18 +7,18 @@ import {
   TextInput,
   KeyboardAvoidingView,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faArrowLeft} from '@fortawesome/free-solid-svg-icons';
-import {useDispatch, useSelector} from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {FONT} from '../../common/Theme';
-import {callLogin, callSignup, getLocalAccessToken} from './AuthThunk';
-import {logOut, setAuthMode} from './AuthSlice';
-import {useNavigation} from '@react-navigation/native';
-import {removeLocalStorage} from '../../common/LocalStorage';
-import {KEY_LOCAL_TOKEN} from '../../common/Constant';
+import { FONT } from '../../common/Theme';
+import { callLogin, callSignup, getLocalAccessToken } from './AuthThunk';
+import { logOut, setAuthMode } from './AuthSlice';
+import { useNavigation } from '@react-navigation/native';
+import { removeLocalStorage } from '../../common/LocalStorage';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
 
 const AuthScreen = () => {
   const navigation = useNavigation();
@@ -27,33 +27,24 @@ const AuthScreen = () => {
   const ic_gg = require('../../assets/images/google.png');
   const login = useSelector(state => state.auth.loginMode);
   const localToken = useSelector(state => state.auth.accessToken);
+  const signupStatus = useSelector(state => state.auth.signupStatus)
   const dispatch = useDispatch();
 
   // Store data for login
-  let loginInfo = {
-    email: '',
-    password: '',
-  };
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const emailPattern = '/^w+([.-]?w+)*@w+([.-]?w+)*(.w{2,3})+$/';
 
   // Store data for signup
-  let signUpInfo = {
-    email: 'st232122',
-    password: 'st',
-    name: 'st',
-    gender: true,
-    phone: '2321',
-  };
 
-  //For login
-  const signinEmailHandler = data => {
-    loginInfo.email = data;
-  };
+  const [signupEmail, setSignupEmail] = useState('')
+  const [signupPassword, setSignupPassword] = useState('')
+  const [signupName, setSignupName] = useState('')
+  const [signupPhone, setSignupPhone] = useState('')
 
-  const signinPasswordHandler = data => {
-    loginInfo.password = data;
-  };
+
 
   const onPressSignupText = () => {
     dispatch(setAuthMode(false));
@@ -67,68 +58,65 @@ const AuthScreen = () => {
     // if(loginInfo.email.match(emailPattern) && loginInfo.password != "") {
     //     dispatch(callLogin(loginInfo))
     // }
+    const loginInfo = {
+      email,
+      password
+    }
+    console.log(loginInfo)
     dispatch(callLogin(loginInfo));
   };
 
   const checkLogin = () => {
     if (localToken == undefined || localToken == '') {
-      console.log('Not loggin');
+      console.log('Currently not logged in');
     } else {
-      navigation.navigate('Home');
+      console.log(`token from local: ${localToken}`)
+      navigation.navigate('AnimateTab');
     }
   };
 
   //For signup
-  const signupEmail = data => {
-    signUpInfo.email = data;
-  };
-
-  const signupPassword = data => {
-    signUpInfo.password = data;
-  };
-
-  const signupName = data => {
-    signUpInfo.name = data;
-  };
-
-  const signupGender = data => {
-    signUpInfo.gender = data;
-  };
-
-  const signupPhone = data => {
-    signUpInfo.phone = data;
-  };
 
   const onPressSignUp = () => {
-    if (
-      signUpInfo.email.match(emailPattern) &&
-      signUpInfo.password !== '' &&
-      signUpInfo.gender !== '' &&
-      signUpInfo.name !== '' &&
-      signUpInfo.phone !== ''
-    ) {
-      dispatch(callSignup(signUpInfo));
+    const signUpInfo = {
+      email: signupEmail,
+      password: signupPassword,
+      name: signupName,
+      phone: signupPhone
     }
+    console.log(signUpInfo)
+    dispatch(callSignup(signUpInfo))
+
+
   };
 
   useEffect(() => {
     dispatch(getLocalAccessToken());
     checkLogin();
+
   }, [localToken]);
+
+  useEffect(() => {
+    //If signup successful then login automatically
+    if (signupStatus) {
+      dispatch(callLogin({ email: signupEmail, password: signupPassword }))
+    }
+
+  }, [signupStatus])
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       enabled={false}>
-      <View style={{flex: 1}}>
+      <View style={{ flex: 1 }}>
         <Image source={bg_login} style={styles.img_login} resizeMode="cover" />
       </View>
       <LinearGradient
         style={styles.gradient_container}
         colors={['transparent', '#1B1517', '#000']}>
         {!login && (
-          <TouchableOpacity onPress={() => backtoLogin()}>
+          <TouchableOpacity onPress={() => backtoLogin()} style={{ position: 'absolute', top: "5%", left: "5%" }}>
             <FontAwesomeIcon icon={faArrowLeft} color="#FFF" size={24} />
           </TouchableOpacity>
         )}
@@ -137,16 +125,20 @@ const AuthScreen = () => {
           {login ? (
             <>
               <Text style={styles.title_text}>Log in</Text>
+
               <TextInput
                 style={styles.input_field}
                 placeholder="Email"
-                onChangeText={signinEmailHandler}
+                autoCapitalize='none'
+                onChangeText={(email) => setEmail(email)}
+
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
+                autoCapitalize='none'
                 secureTextEntry
-                onChangeText={signinPasswordHandler}
+                onChangeText={(password) => setPassword(password)}
               />
               <TouchableOpacity
                 style={styles.btn_authen}
@@ -174,42 +166,39 @@ const AuthScreen = () => {
                 </TouchableOpacity>
               </View>
               <TouchableOpacity>
-                <Text style={[styles.footer_textTouch, {alignSelf: 'center'}]}>
+                <Text style={[styles.footer_textTouch, { alignSelf: 'center' }]}>
                   Forgot your password?
                 </Text>
               </TouchableOpacity>
             </>
           ) : (
             <>
-              <Text style={styles.title_text}>Log in</Text>
+              <Text style={styles.title_text}>Sign up</Text>
               <TextInput
                 style={styles.input_field}
                 placeholder="Email"
-                onChangeText={() => {}}
+                onChangeText={data => setSignupEmail(data)}
+                autoCapitalize='none'
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
+                autoCapitalize='none'
                 secureTextEntry
-                onChangeText={() => {}}
+                onChangeText={data => setSignupPassword(data)}
               />
 
               <TextInput
                 style={styles.input_field}
                 placeholder="Name"
-                onChangeText={() => {}}
-              />
-              <TextInput
-                style={styles.input_field}
-                placeholder="Gender"
-                onChangeText={() => {}}
+                onChangeText={data => setSignupName(data)}
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Phone"
-                onChangeText={() => {}}
+                onChangeText={data => setSignupPhone(data)}
               />
-              <TouchableOpacity style={styles.btn_authen} onPress={() => {}}>
+              <TouchableOpacity style={styles.btn_authen} onPress={() => onPressSignUp()}>
                 <Text style={styles.btn_authen_text}>Agree & Continue</Text>
               </TouchableOpacity>
 
@@ -217,9 +206,17 @@ const AuthScreen = () => {
                 <Text style={styles.footer_text}>
                   By selecting Agree & Continue, I agree to
                 </Text>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity onPress={() => { }}>
                   <Text style={styles.footer_textTouch}>
                     Term of Service and Privacy Policy
+                  </Text>
+                </TouchableOpacity>
+                <Text style={styles.footer_text}>
+                  Already a member?
+                </Text>
+                <TouchableOpacity onPress={() => backtoLogin()}>
+                  <Text style={styles.footer_textTouch}>
+                    Login
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -266,6 +263,7 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 5,
     marginBottom: 12,
+    padding: 8
   },
 
   title_text: {
@@ -331,12 +329,12 @@ const styles = StyleSheet.create({
   },
   footer_text: {
     fontFamily: FONT.regular,
-    fontSize: 14,
+    fontSize: 16,
     color: 'white',
   },
   footer_textTouch: {
     color: '#03D396',
     fontFamily: FONT.regular,
-    fontSize: 14,
+    fontSize: 16,
   },
 });

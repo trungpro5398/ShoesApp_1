@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-
+import React, { useEffect, useState } from 'react';
+import 'react-native-get-random-values'
 import {
   View,
   StyleSheet,
@@ -9,25 +9,25 @@ import {
   Image,
   FlatList,
 } from 'react-native';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faXmark} from '@fortawesome/free-solid-svg-icons';
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchProductById} from './ProductThunks';
-import {resetDataProduct} from './ProductSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchProductById } from './ProductThunks';
+import { resetDataProduct } from './ProductSlice';
 import Detailproductscreen from './DetailProductScreen';
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
-import {changeLoading} from '../components/spinner/SpinnerSlice';
-import {faHeart} from '@fortawesome/free-solid-svg-icons';
+import { changeLoading } from '../components/spinner/SpinnerSlice';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+import { v4 as uuid } from 'uuid';
 const Productscreen = props => {
   const dispatch = useDispatch();
-
   const navigation = props.navigation;
   const item = props.route.params.item;
   const category = props.route.params.category;
   const dataProduct = useSelector(state => state.product.dataProduct);
   const iconTune = require('../../assets/images/icon_tune.png');
   const [state, changeState] = useState(0);
-  const change = ({nativeEvent}) => {
+  const change = ({ nativeEvent }) => {
     const slide = Math.ceil(
       nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width,
     ); // lay index cua hinh anh, toa do x, va khoang cach tu tu 0 cho den toa do keo
@@ -48,39 +48,18 @@ const Productscreen = props => {
       dispatch(changeLoading(false));
     }, 500);
   }, []);
-  const renderItem = ({item}) => {
+  const renderItem = ({ item }) => {
     return (
-      <View>
-        <Image source={{uri: item.image}} style={styles.image} />
-        <TouchableOpacity
-          onPress={() => {
-            props.isLike
-              ? dispatch(fetchUserUnLike({id: item.id, token: token}))
-              : dispatch(fetchUserLike({id: item.id, token: token}));
+      <View key={uuid()} >
 
-            changeCountLke(countLke + 1);
-          }}>
-          <FontAwesomeIcon
-            icon={faHeart}
-            size={20}
-            color={props.isLike ? 'black' : 'blue'}
-            style={{
-              width: 16,
-              height: 16,
-              position: 'absolute',
-              right: 10,
-              top: 10,
-            }}
-            fixedWidth
-          />
-        </TouchableOpacity>
+        <Image source={{ uri: item.image }} style={styles.image} />
       </View>
     );
   };
   return dataProduct.length > 0 ? (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Spinnerscreen />
-      <SafeAreaView style={{flex: 1, margin: 20}}>
+      <SafeAreaView style={{ flex: 1, margin: 20 }}>
         <View
           style={{
             flexDirection: 'row',
@@ -89,13 +68,13 @@ const Productscreen = props => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <FontAwesomeIcon icon={faXmark} size={20} color="#000" />
           </TouchableOpacity>
-          <Text style={{color: 'black', fontSize: 20}}>{category}</Text>
-          <Image source={iconTune} style={{width: 20, height: 20}} />
+          <Text style={{ color: 'black', fontSize: 20 }}>{category}</Text>
+          <Image source={iconTune} style={{ width: 20, height: 20 }} />
         </View>
         <View style={styles.container}>
           <FlatList
             data={dataProduct}
-            keyExtractor={item => item.id}
+
             horizontal
             showsHorizontalScrollIndicator={false}
             renderItem={renderItem}
@@ -105,6 +84,7 @@ const Productscreen = props => {
           <View style={styles.pagination}>
             {dataProduct.map((i, k) => (
               <Text
+                key={uuid()}
                 style={
                   k === state ? styles.paginText : styles.pageinActiveText
                 }>

@@ -1,7 +1,7 @@
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import {useDispatch} from 'react-redux';
-import {KEY_LOCAL_TOKEN} from '../../common/Constant';
-import {getLocalStorage} from '../../common/LocalStorage';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
+import { getLocalStorage } from '../../common/LocalStorage';
 
 export const callLogin = createAsyncThunk('User/login', async user => {
   const options = {
@@ -12,7 +12,7 @@ export const callLogin = createAsyncThunk('User/login', async user => {
     body: JSON.stringify(user),
   };
 
-  const res = await fetch('http://svcy3.myclass.vn/api/Users/signin', options);
+  const res = await fetch('https://shop.cyberlearn.vn/api/Users/signin', options);
   const json = await res.json();
 
   //Catch login failed
@@ -45,11 +45,12 @@ export const callSignup = createAsyncThunk('User/signup', async user => {
     body: JSON.stringify(user),
   };
 
-  const res = await fetch('http://svcy3.myclass.vn/api/Users/signup', options);
+  const res = await fetch('https://shop.cyberlearn.vn/api/Users/signup', options);
   const json = await res.json();
 
   //Catch signup failed
   if (!res.ok) {
+    console.log(json.message)
     return Promise.reject(json.message);
   }
 

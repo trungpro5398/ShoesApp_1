@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,7 +8,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import Svg, {Path} from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 import {
   fetchProducts,
   fetchCategories,
@@ -17,18 +17,21 @@ import {
   fetchUserUnLike,
   fetchProductFavorite,
 } from './HomeThunks';
-import {callLogin} from '../authentication/AuthThunk';
-import {setAccessToken} from '../authentication/AuthSlice';
-import {getLocalStorage} from '../../common/LocalStorage';
-import {KEY_LOCAL_TOKEN} from '../../common/Constant';
-import {changeId, changeProductId} from './HomeSlice';
-import {useDispatch, useSelector} from 'react-redux';
+import { callLogin } from '../authentication/AuthThunk';
+import { setAccessToken } from '../authentication/AuthSlice';
+import { getLocalStorage, removeLocalStorage } from '../../common/LocalStorage';
+import { KEY_LOCAL_TOKEN } from '../../common/Constant';
+import { changeId, changeProductId } from './HomeSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import StaggeredList from '@mindinventory/react-native-stagger-view';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faHeart, faSearch} from '@fortawesome/free-solid-svg-icons';
+
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faHeart } from '@fortawesome/free-solid-svg-icons';
+
 import Spinnerscreen from '../components/spinner/SpinnerScreen';
-import {changeLoading} from '../components/spinner/SpinnerSlice';
-const Homescreen = ({navigation}) => {
+import { changeLoading } from '../components/spinner/SpinnerSlice';
+import { FONT } from '../../common/Theme';
+const Homescreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [countLke, changeCountLke] = useState(0);
   const dataProducts = useSelector(state => state.home.dataProducts);
@@ -46,9 +49,11 @@ const Homescreen = ({navigation}) => {
   const iconClose = require('../../assets/images/icon_close.png');
   const iconTune = require('../../assets/images/icon_tune.png');
 
+
+  const getUser = () => {
+
+  }
   const user = {
-    email: 'test1',
-    password: '123',
   };
 
   //token save in state.auth
@@ -60,9 +65,10 @@ const Homescreen = ({navigation}) => {
       dispatch(fetchCategories());
       setTimeout(() => {
         dispatch(changeLoading(false));
-      }, 1000);
-      dispatch(callLogin(user));
+      }, 2000);
+
     };
+
     fetchData();
   }, []);
 
@@ -82,13 +88,15 @@ const Homescreen = ({navigation}) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          dispatch(changeProductId({isClickedProductId: item.id})),
+          dispatch(changeProductId({ isClickedProductId: item.id })),
             navigation.navigate('Product', {
               item: item,
               category: isClickedId,
               isLike: likeOrUnlike(item.id),
             });
-        }}>
+        }}
+        key={item.id}
+      >
         <View
           style={{
             margin: 8,
@@ -108,15 +116,15 @@ const Homescreen = ({navigation}) => {
           <TouchableOpacity
             onPress={() => {
               likeOrUnlike(item.id)
-                ? dispatch(fetchUserUnLike({id: item.id, token: token}))
-                : dispatch(fetchUserLike({id: item.id, token: token}));
+                ? dispatch(fetchUserUnLike({ id: item.id, token: token }))
+                : dispatch(fetchUserLike({ id: item.id, token: token }));
 
               changeCountLke(countLke + 1);
             }}>
             <FontAwesomeIcon
               icon={faHeart}
               size={20}
-              color={likeOrUnlike(item.id) ? 'black' : 'blue'}
+              color={likeOrUnlike(item.id) ? 'red' : 'gray'}
               style={{
                 width: 16,
                 height: 16,
@@ -127,7 +135,7 @@ const Homescreen = ({navigation}) => {
           </TouchableOpacity>
 
           <Image
-            source={{uri: item.image}}
+            source={{ uri: item.image }}
             style={{
               resizeMode: 'contain', // dieu chinh hinh vua voi kich thuoc da cho
               width: '100%',
@@ -137,6 +145,7 @@ const Homescreen = ({navigation}) => {
           />
           <Text
             style={{
+              fontFamily: FONT.semiBold,
               fontSize: 18,
               fontWeight: '500',
               marginTop: 16,
@@ -144,7 +153,7 @@ const Homescreen = ({navigation}) => {
             }}>
             {item.name}
           </Text>
-          <Text style={{fontSize: 16, fontWeight: '500', color: '#CCC'}}>
+          <Text style={{ fontSize: 16, fontWeight: '500', color: 'gray' }}>
             ${item.price}
           </Text>
         </View>
@@ -153,10 +162,10 @@ const Homescreen = ({navigation}) => {
   };
   const renderItemCategories = item => (
     <TouchableOpacity
-      onPress={() => dispatch(changeId({isClickedId: item.category}))}>
+      onPress={() => dispatch(changeId({ isClickedId: item.id }))}>
       <Text
         style={{
-          color: isClickedId === item.category ? '#FFF' : 'grey',
+          color: isClickedId === item.id ? '#FFF' : 'grey',
           margin: 5,
           fontSize: 18,
           fontWeight: '500',
@@ -168,7 +177,7 @@ const Homescreen = ({navigation}) => {
   );
   // safearea khong co default flex giong view
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Spinnerscreen />
       <View
         style={{
@@ -184,14 +193,16 @@ const Homescreen = ({navigation}) => {
           />
         </Svg>
       </View>
-      <SafeAreaView style={{flex: 1, margin: 20}}>
+      <SafeAreaView style={{ flex: 1, margin: 20 }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
           }}>
-          <Image source={iconClose} style={{width: 20, height: 20}} />
-          <FontAwesomeIcon icon={faSearch} size={20} color="black" />
+
+          <Image source={iconClose} style={{ width: 20, height: 20 }} />
+          <Image source={iconTune} style={{ width: 20, height: 20 }} />
+
         </View>
 
         <View>
@@ -199,13 +210,13 @@ const Homescreen = ({navigation}) => {
             data={dataCategories}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            renderItem={({item}) => renderItemCategories(item)}
+            renderItem={({ item }) => renderItemCategories(item)}
           />
         </View>
         <StaggeredList
           data={isClickedId !== null ? dataProductsByCategory : dataProducts}
           animationType={'FADE_IN_FAST'}
-          renderItem={({item}) => renderItem(item)}
+          renderItem={({ item }) => renderItem(item)}
         />
       </SafeAreaView>
     </View>
