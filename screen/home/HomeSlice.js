@@ -41,14 +41,14 @@ const homeSlice = createSlice({
         state.dataProducts = action.payload;
       })
       .addCase(fetchCategories.pending, (state, action) => {
-        // fetch la promise ( pending, fulfilled, rejected)
+        // fetch la promise ( pending, fulfilled, rejected) s
         state.isLoading = true;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.dataCategories = action.payload;
       })
       .addCase(fetchProductByCategory.pending, (state, action) => {
-        // fetch la promise ( pending, fulfilled, rejected)
+        // fetch la promise ( pending, fulfilled, rejected) abc
         state.isLoading = true;
       })
       .addCase(fetchProductByCategory.fulfilled, (state, action) => {
