@@ -9,8 +9,11 @@ import AuthScreen from './screen/authentication/AuthScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useSelector } from 'react-redux';
 import FirstScreenNavigator from './screen/components/StackNav/FirstScreenNavigator';
+import { LogBox } from 'react-native';
 const Stack = createNativeStackNavigator()
+
 const App = () => {
+  LogBox.ignoreAllLogs()
 
   return (
     <Provider store={store}>

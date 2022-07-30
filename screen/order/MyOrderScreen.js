@@ -6,14 +6,16 @@ import { useSelector } from 'react-redux'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { FlatList } from 'react-native-gesture-handler'
 import { FONT } from '../../common/Theme'
-
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faBoxArchive } from '@fortawesome/free-solid-svg-icons'
+import { v4 as uuid } from 'uuid'
 const MyOrderScreen = () => {
     MaterialCommunityIcons.loadFont()
     const profileDetail = useSelector(state => state.profile.profileDetail)
 
 
     const Item = (props) => (
-        <View>
+        <View key={uuid()}>
             <Text>{props.name}</Text>
             <Image source={{ uri: props.imgLink }} style={{ width: 50, height: 50, resizeMode: "contain", alignSelf: "center" }} />
         </View>
@@ -32,8 +34,17 @@ const MyOrderScreen = () => {
         </View>
     )
 
-
-    return (
+    if (!!profileDetail.ordersHistory && profileDetail.ordersHistory.length === 0) {
+        return (
+            <SafeAreaView style={{ flex: 1 }}>
+                <Header title={"My Order"} />
+                <View style={styles.noOrderContainer}>
+                    <FontAwesomeIcon icon={faBoxArchive} size={36} style={{ marginBottom: 16 }} />
+                    <Text style={{ fontFamily: FONT.semiBold, fontSize: 24, textAlign: 'center' }}>No recent order</Text>
+                </View>
+            </SafeAreaView>
+        )
+    } else return (
         <SafeAreaView>
             <Header title={"My Order"} />
             <FlatList
@@ -75,7 +86,11 @@ const styles = StyleSheet.create({
 
     orderTitle: {
         flexDirection: 'row',
+    },
 
-
+    noOrderContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 })

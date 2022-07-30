@@ -33,6 +33,7 @@ const authSlice = createSlice({
         let token = action.payload.accessToken;
         saveLocalStorage(KEY_LOCAL_TOKEN, token);
         state.accessToken = token;
+        state.signupStatus = false
       })
       .addCase(callLogin.rejected, (state, action) => {
         // When login failed

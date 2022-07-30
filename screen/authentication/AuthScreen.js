@@ -129,12 +129,14 @@ const AuthScreen = () => {
               <TextInput
                 style={styles.input_field}
                 placeholder="Email"
+                autoCapitalize='none'
                 onChangeText={(email) => setEmail(email)}
 
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
+                autoCapitalize='none'
                 secureTextEntry
                 onChangeText={(password) => setPassword(password)}
               />
@@ -176,10 +178,12 @@ const AuthScreen = () => {
                 style={styles.input_field}
                 placeholder="Email"
                 onChangeText={data => setSignupEmail(data)}
+                autoCapitalize='none'
               />
               <TextInput
                 style={styles.input_field}
                 placeholder="Password"
+                autoCapitalize='none'
                 secureTextEntry
                 onChangeText={data => setSignupPassword(data)}
               />

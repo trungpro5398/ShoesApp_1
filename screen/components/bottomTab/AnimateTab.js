@@ -63,12 +63,12 @@ const TabArray = [
     icon: faHome,
     component: Homescreen,
   },
-  {
-    route: 'Search',
-    label: 'Search',
-    icon: faMagnifyingGlass,
-    component: Searchscreen,
-  },
+  // {
+  //   route: 'Search',
+  //   label: 'Search',
+  //   icon: faMagnifyingGlass,
+  //   component: Searchscreen,
+  // },
   {
     route: 'Cart',
     label: 'Cart',
